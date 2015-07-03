@@ -1,10 +1,10 @@
-# minphp/Db
+# minphp/Record
 
 [![Build Status](https://travis-ci.org/phillipsdata/minphp-record.svg?banch=master)](https://travis-ci.org/phillipsdata/minphp-record) [![Coverage Status](https://coveralls.io/repos/phillipsdata/minphp-record/badge.svg)](https://coveralls.io/r/phillipsdata/minphp-record)
 
 Database Access Library.
 
-Provides a fluent interface for generating SQL queries.
+Provides a fluent interface for generating and executing SQL queries.
 
 ## Installation
 
