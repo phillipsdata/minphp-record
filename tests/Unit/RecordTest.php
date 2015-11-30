@@ -1,11 +1,11 @@
 <?php
-namespace minphp\Record\Tests\Unit;
+namespace Minphp\Record\Tests\Unit;
 
-use minphp\Record\Record;
+use Minphp\Record\Record;
 use PHPUnit_Framework_TestCase;
 
 /**
- * @coversDefaultClass \minphp\Record\Record
+ * @coversDefaultClass \Minphp\Record\Record
  */
 class RecordTest extends PHPUnit_Framework_TestCase
 {
@@ -19,7 +19,7 @@ class RecordTest extends PHPUnit_Framework_TestCase
 
     private function instance()
     {
-        return '\minphp\Record\Record';
+        return '\Minphp\Record\Record';
     }
 
     /**

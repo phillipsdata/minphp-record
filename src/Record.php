@@ -1,7 +1,7 @@
 <?php
-namespace minphp\Record;
+namespace Minphp\Record;
 
-use minphp\Db\PdoConnection;
+use Minphp\Db\PdoConnection;
 use stdClass;
 
 /**

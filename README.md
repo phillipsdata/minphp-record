@@ -1,4 +1,4 @@
-# minphp/Record
+# Minphp/Record
 
 [![Build Status](https://travis-ci.org/phillipsdata/minphp-record.svg?banch=master)](https://travis-ci.org/phillipsdata/minphp-record) [![Coverage Status](https://coveralls.io/repos/phillipsdata/minphp-record/badge.svg)](https://coveralls.io/r/phillipsdata/minphp-record)
 
@@ -19,7 +19,7 @@ composer require minphp/record:~1.0
 First, initialize your connection:
 
 ```php
-use minphp\Record\Record;
+use Minphp\Record\Record;
 
 $dbInfo = array(
     'driver' => 'mysql',
