@@ -1488,9 +1488,7 @@ class Record extends PdoConnection
         if (!empty($this->group)) {
             $sql .= " GROUP BY ";
             for ($i = 0; $i < count($this->group); $i++) {
-                $sql .= $i > 0
-                    ? ", "
-                    : ""
+                $sql .= ($i > 0 ? ", " : "")
                     . $this->escapeField($this->group[$i]);
             }
         }
