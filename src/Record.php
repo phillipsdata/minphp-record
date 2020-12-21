@@ -1323,7 +1323,9 @@ class Record extends PdoConnection
      */
     private function buildTableOptions()
     {
-        return " ENGINE=InnoDB DEFAULT CHARSET=" . $this->character_set . " COLLATE=" . $this->collation;
+        $this->values[] = $this->character_set;
+        $this->values[] = $this->collation;
+        return " ENGINE=InnoDB DEFAULT CHARSET=? COLLATE=?";
     }
 
     /**
