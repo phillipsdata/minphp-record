@@ -81,11 +81,11 @@ class Record extends PdoConnection
     private $limit = array();
 
     /**
-     * @var string The character set to use for the database connection and table construction
+     * @var string The character set to use for table construction
      */
     private $character_set = 'utf8mb4';
     /**
-     * @var string The collation to use for the database connection and table construction
+     * @var string The collation to use for table construction
      */
     private $collation = 'utf8mb4_unicode_ci';
 
@@ -168,7 +168,7 @@ class Record extends PdoConnection
     /**
      * Sets character set
      *
-     * @param string $character_set The character set to use for the database connection and table construction
+     * @param string $character_set The character set to use for table construction
      */
     public function setCharacterSet($character_set)
     {
@@ -178,7 +178,7 @@ class Record extends PdoConnection
     /**
      * Sets the collation
      *
-     * @param string $collation The collation to use for the database connection and table construction
+     * @param string $collation The collation to use for table construction
      */
     public function setCollation($collation)
     {
