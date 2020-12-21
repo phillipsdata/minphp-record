@@ -76,7 +76,7 @@ class RecordTest extends PHPUnit_Framework_TestCase
 
         $query = "CREATE TABLE `table_name` (`id` int(10) UNSIGNED  NOT NULL "
             . "AUTO_INCREMENT, `field1` varchar(32) NULL, PRIMARY KEY (`id`)) "
-            . "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
+            . "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci";
         $record = $this->getQueryMock($query, $params = array(), $pdo_statement);
         $record
             ->setField("id", array('type' => "int", 'size' => 10, 'unsigned' => true, 'auto_increment' => true))
