@@ -81,6 +81,15 @@ class Record extends PdoConnection
     private $limit = array();
 
     /**
+     * @var string The character set to use for the database connection and table construction
+     */
+    private $character_set = 'utf8mb4';
+    /**
+     * @var string The collation to use for the database connection and table construction
+     */
+    private $collation = 'utf8mb4_unicode_ci';
+
+    /**
      * @var string The character to use to quote identifiers
      */
     protected $ident_quote_chr = "`";
@@ -154,6 +163,26 @@ class Record extends PdoConnection
         ] = $fields;
 
         return $this;
+    }
+
+    /**
+     * Sets character set
+     *
+     * @param string $character_set The character set to use for the database connection and table construction
+     */
+    public function setCharacterSet($character_set)
+    {
+        return $this->character_set = $character_set;
+    }
+
+    /**
+     * Sets the collation
+     *
+     * @param string $collation The collation to use for the database connection and table construction
+     */
+    public function setCollation($collation)
+    {
+        return $this->collation = $collation;
     }
 
     /**
@@ -1294,7 +1323,7 @@ class Record extends PdoConnection
      */
     private function buildTableOptions()
     {
-        return " ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
+        return " ENGINE=InnoDB DEFAULT CHARSET=" . $this->character_set . " COLLATE=" . $this->collation;
     }
 
     /**
