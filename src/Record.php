@@ -84,6 +84,7 @@ class Record extends PdoConnection
      * @var string The character set to use for table construction
      */
     private $character_set = 'utf8mb4';
+
     /**
      * @var string The collation to use for table construction
      */
