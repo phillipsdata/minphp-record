@@ -96,6 +96,16 @@ class Record extends PdoConnection
     protected $ident_quote_chr = "`";
 
     /**
+     * @var string The character set to use for table construction
+     */
+    private $character_set = 'utf8';
+
+    /**
+     * @var string The collation to use for table construction
+     */
+    private $collation = 'utf8_unicode_ci';
+
+    /**
      * @var array All values, in the order added appended to the PDO::query() method
      */
     public $values = array();
