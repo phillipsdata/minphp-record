@@ -81,6 +81,11 @@ class Record extends PdoConnection
     private $limit = array();
 
     /**
+     * @var string The character to use to quote identifiers
+     */
+    protected $ident_quote_chr = "`";
+
+    /**
      * @var string The character set to use for table construction
      */
     private $character_set = 'utf8mb4';
@@ -89,21 +94,6 @@ class Record extends PdoConnection
      * @var string The collation to use for table construction
      */
     private $collation = 'utf8mb4_unicode_ci';
-
-    /**
-     * @var string The character to use to quote identifiers
-     */
-    protected $ident_quote_chr = "`";
-
-    /**
-     * @var string The character set to use for table construction
-     */
-    private $character_set = 'utf8';
-
-    /**
-     * @var string The collation to use for table construction
-     */
-    private $collation = 'utf8_unicode_ci';
 
     /**
      * @var array All values, in the order added appended to the PDO::query() method
