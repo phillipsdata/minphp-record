@@ -421,6 +421,11 @@ $record->from('users')
 ### Create Table
 
 ```php
+/**
+* Optionally set the character set and collation of the table being created
+* $record->setCharacterSet('utf8mb4');
+* $record->setCollation('utf8mb4_unicode_ci');
+*/
 $record->setField(
         'id',
         array('type' => 'int', 'size' => 10, 'unsigned' => true, 'auto_increment' => true)
