@@ -1437,7 +1437,7 @@ class Record extends PdoConnection
                 $sql .= $this->escapeField($this->tables[$i]);
             }
         }
-        $sql .= strlen($this->join_sql ?? '') > 0
+        $sql .= (isset($this->join_sql) && (strlen($this->join_sql) > 0))
             ? " " . $this->join_sql
             : "";
 
