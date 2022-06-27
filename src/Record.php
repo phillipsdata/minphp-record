@@ -1498,7 +1498,7 @@ class Record extends PdoConnection
                         : $this->order[$i]['field']
                     ) .
                     (
-                        strtolower($this->order[$i]['order']) == "desc"
+                        strtolower(isset($this->order[$i]['order']) ? $this->order[$i]['order'] : '') == "desc"
                         ? " DESC"
                         : " ASC"
                     );
