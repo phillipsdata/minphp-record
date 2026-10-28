@@ -573,6 +573,136 @@ class RecordTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf($this->instance(), $this->Record->set("field", "value"));
     }
 
+    /**
+     * @covers ::fetch
+     * @covers ::fetchAll
+     * @dataProvider fetchProvider
+     */
+    public function testFetch($method)
+    {
+        $result = array("id" => 1);
+        $pdo_statement = $this->getMockBuilder("\PDOStatement")
+            ->getMock();
+        $pdo_statement->expects($this->once())
+            ->method("setFetchMode")
+            ->with($this->equalTo(\PDO::FETCH_ASSOC));
+        $pdo_statement->expects($this->once())
+            ->method($method)
+            ->will($this->returnValue($result));
+        $pdo_statement->expects($this->once())
+            ->method("closeCursor");
+
+        $record = $this->getStatementMock($pdo_statement);
+
+        $this->assertEquals($result, $record->select()->from("table_name")->$method(\PDO::FETCH_ASSOC));
+    }
+
+    /**
+     * Data provider for testFetch
+     */
+    public function fetchProvider()
+    {
+        return array(
+            array("fetch"),
+            array("fetchAll")
+        );
+    }
+
+    /**
+     * @covers ::getStatement
+     */
+    public function testGetStatement()
+    {
+        $pdo_statement = $this->getMockBuilder("\PDOStatement")
+            ->getMock();
+
+        $record = $this->getStatementMock($pdo_statement);
+
+        $this->assertSame($pdo_statement, $record->select()->from("table_name")->getStatement());
+    }
+
+    /**
+     * @covers ::create
+     * @covers ::alter
+     * @covers ::truncate
+     * @covers ::drop
+     * @covers ::insert
+     * @covers ::update
+     * @covers ::delete
+     * @covers ::fetch
+     * @covers ::fetchAll
+     * @covers ::getStatement
+     * @covers ::reset
+     * @dataProvider failedQueryProvider
+     */
+    public function testResetWhenQueryFails($method, array $args)
+    {
+        $record = $this->getMockBuilder($this->instance())
+            ->disableOriginalConstructor()
+            ->setMethods(array("query"))
+            ->getMock();
+        $record->expects($this->once())
+            ->method("query")
+            ->will($this->throwException(new \PDOException("Query failed")));
+
+        $record->select()->from("table_name")->where("id", "=", 1);
+
+        try {
+            call_user_func_array(array($record, $method), $args);
+            $this->fail("The query error was not thrown");
+        } catch (\PDOException $e) {
+            $this->assertEquals("Query failed", $e->getMessage());
+        }
+
+        // The next query is built as it would be on a new Record
+        $fresh = new Record(array());
+        $this->assertEquals(
+            $fresh->select()->from("other_table")->where("id", "=", 2)->get(),
+            $record->select()->from("other_table")->where("id", "=", 2)->get()
+        );
+        $this->assertEquals($fresh->values, $record->values);
+    }
+
+    /**
+     * Data provider for testResetWhenQueryFails
+     */
+    public function failedQueryProvider()
+    {
+        return array(
+            array("create", array("table_name")),
+            array("alter", array("table_name")),
+            array("truncate", array("table_name")),
+            array("drop", array("table_name")),
+            array("insert", array("table_name", array("field" => "value"))),
+            array("update", array("table_name", array("field" => "value"))),
+            array("delete", array()),
+            array("fetch", array()),
+            array("fetchAll", array()),
+            array("getStatement", array())
+        );
+    }
+
+
+    /**
+     * Generates a Record mock whose ::query returns the given statement and whose ::reset must be called once
+     *
+     * @param \PDOStatement $statement The statement ::query returns
+     * @return object
+     */
+    protected function getStatementMock($statement)
+    {
+        $record = $this->getMockBuilder($this->instance())
+            ->disableOriginalConstructor()
+            ->setMethods(array("query", "reset"))
+            ->getMock();
+        $record->expects($this->once())
+            ->method("query")
+            ->will($this->returnValue($statement));
+        $record->expects($this->once())
+            ->method("reset");
+
+        return $record;
+    }
 
     /**
      * Generates a Record mock with ::query and ::reset mocked

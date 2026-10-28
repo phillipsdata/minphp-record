@@ -202,9 +202,11 @@ class Record extends PdoConnection
         );
         $this->tables[] = $table;
 
-        $statement = $this->query($this->buildQuery(), $this->values);
-        $this->reset();
-        return $statement;
+        try {
+            return $this->query($this->buildQuery(), $this->values);
+        } finally {
+            $this->reset();
+        }
     }
 
     /**
@@ -218,9 +220,11 @@ class Record extends PdoConnection
         $this->type = "alter";
         $this->tables[] = $table;
 
-        $statement = $this->query($this->buildQuery(), $this->values);
-        $this->reset();
-        return $statement;
+        try {
+            return $this->query($this->buildQuery(), $this->values);
+        } finally {
+            $this->reset();
+        }
     }
 
     /**
@@ -234,9 +238,11 @@ class Record extends PdoConnection
         $this->type = "truncate";
         $this->tables[] = $table;
 
-        $statement = $this->query($this->buildQuery());
-        $this->reset();
-        return $statement;
+        try {
+            return $this->query($this->buildQuery());
+        } finally {
+            $this->reset();
+        }
     }
 
     /**
@@ -255,9 +261,11 @@ class Record extends PdoConnection
         );
         $this->tables[] = $table;
 
-        $statement = $this->query($this->buildQuery());
-        $this->reset();
-        return $statement;
+        try {
+            return $this->query($this->buildQuery());
+        } finally {
+            $this->reset();
+        }
     }
 
     /**
@@ -300,11 +308,13 @@ class Record extends PdoConnection
         $this->type = "insert";
         $this->tables[] = $table;
 
-        $this->setFields($values, $value_keys);
+        try {
+            $this->setFields($values, $value_keys);
 
-        $statement = $this->query($this->buildQuery(), $this->values);
-        $this->reset();
-        return $statement;
+            return $this->query($this->buildQuery(), $this->values);
+        } finally {
+            $this->reset();
+        }
     }
 
     /**
@@ -323,11 +333,13 @@ class Record extends PdoConnection
             $this->tables[] = $table;
         }
 
-        $this->setFields($values, $value_keys);
+        try {
+            $this->setFields($values, $value_keys);
 
-        $statement = $this->query($this->buildQuery(), $this->values);
-        $this->reset();
-        return $statement;
+            return $this->query($this->buildQuery(), $this->values);
+        } finally {
+            $this->reset();
+        }
     }
 
     /**
@@ -342,9 +354,11 @@ class Record extends PdoConnection
         $this->type = "delete";
         $this->columns[] = array("fields" => (array) $columns, "escape" => $escape);
 
-        $statement = $this->query($this->buildQuery(), $this->values);
-        $this->reset();
-        return $statement;
+        try {
+            return $this->query($this->buildQuery(), $this->values);
+        } finally {
+            $this->reset();
+        }
     }
 
     /**
@@ -790,16 +804,20 @@ class Record extends PdoConnection
     public function fetch()
     {
         $args = func_get_args();
-        $statement = $this->query($this->buildQuery(), $this->values);
 
-        if (!empty($args)) {
-            call_user_func_array(array($statement, "setFetchMode"), $args);
+        try {
+            $statement = $this->query($this->buildQuery(), $this->values);
+
+            if (!empty($args)) {
+                call_user_func_array(array($statement, "setFetchMode"), $args);
+            }
+
+            $result = $statement->fetch();
+            $statement->closeCursor();
+            return $result;
+        } finally {
+            $this->reset();
         }
-
-        $result = $statement->fetch();
-        $statement->closeCursor();
-        $this->reset();
-        return $result;
     }
 
     /**
@@ -812,16 +830,20 @@ class Record extends PdoConnection
     public function fetchAll()
     {
         $args = func_get_args();
-        $statement = $this->query($this->buildQuery(), $this->values);
 
-        if (!empty($args)) {
-            call_user_func_array(array($statement, "setFetchMode"), $args);
+        try {
+            $statement = $this->query($this->buildQuery(), $this->values);
+
+            if (!empty($args)) {
+                call_user_func_array(array($statement, "setFetchMode"), $args);
+            }
+
+            $result = $statement->fetchAll();
+            $statement->closeCursor();
+            return $result;
+        } finally {
+            $this->reset();
         }
-
-        $result = $statement->fetchAll();
-        $statement->closeCursor();
-        $this->reset();
-        return $result;
     }
 
     /**
@@ -831,9 +853,11 @@ class Record extends PdoConnection
      */
     public function getStatement()
     {
-        $statement = $this->query($this->buildQuery(), $this->values);
-        $this->reset();
-        return $statement;
+        try {
+            return $this->query($this->buildQuery(), $this->values);
+        } finally {
+            $this->reset();
+        }
     }
 
     /**
